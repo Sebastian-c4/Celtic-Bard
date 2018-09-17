@@ -1,0 +1,10 @@
+
+IF
+	Kit(Player%PN%,c4CelticBard)
+	TriggerOverride(Player%PN%,Global("c4CelticBard_Special","Locals",1))
+	TriggerOverride(Player%PN%,Global("c4CelticBard_Enhanced_Song","Locals",1))
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("c4cbwekx",Player%PN%)
+		Continue()
+END

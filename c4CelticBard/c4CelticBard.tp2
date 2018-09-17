@@ -1,0 +1,44 @@
+BACKUP ~c4CelticBard/backup~
+AUTHOR  ~c4demon@gmail.com~
+
+VERSION ~v4.0~
+
+AUTO_EVAL_STRINGS
+
+AUTO_TRA ~%MOD_FOLDER%/languages/%s~
+
+README ~%MOD_FOLDER%/languages/%LANGUAGE%/readme.pdf~
+
+ALWAYS
+
+	INCLUDE ~%MOD_FOLDER%/lib/_always.tph~
+
+END
+
+LANGUAGE
+  ~简体中文~ 	~schinese~
+							~%MOD_FOLDER%/languages/schinese/prompts/prompts-%WEIDU_OS%.tra~
+							~%MOD_FOLDER%/languages/schinese/setup.tra~ 
+							~%MOD_FOLDER%/languages/schinese/game.tra~
+
+BEGIN @0
+DESIGNATED 1
+REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @-10000
+
+//// copy files
+COPY ~%MOD_FOLDER%/2da~				override
+COPY ~%MOD_FOLDER%/bam~				override
+COPY ~%MOD_FOLDER%/items~			override
+COPY ~%MOD_FOLDER%/spells~		override
+
+//// addkit
+INCLUDE ~%MOD_FOLDER%/lib/addkit.tph~
+
+//// 歌曲和技能
+INCLUDE ~%LIBS%/skills.tph~
+	 
+//// 戒指及武器
+INCLUDE ~%LIBS%/ring_and_weapon.tph~
+
+//// 脚本
+INCLUDE ~%LIBS%/scripts.tph~

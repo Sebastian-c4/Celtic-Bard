@@ -1,0 +1,13 @@
+
+IF
+	Kit(Player%PN%,c4CelticBard)
+	// OR(2)
+		!HasItemEquiped("c4cbrin%ringN%",Player%PN%)
+		// !TriggerOverride(Player%PN%,HaveSpellRES("c4cbcsw%ringN%"))
+	!LevelLT(Player%PN%,%level1%)
+	LevelLT(Player%PN%,%level2%)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("c4cbrin%ringN%",Player%PN%)
+		Continue()
+END

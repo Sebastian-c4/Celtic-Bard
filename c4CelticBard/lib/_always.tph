@@ -1,0 +1,19 @@
+
+// INCLUDE ~%MOD_FOLDER%/lib/_macros.tph~
+
+OUTER_SPRINT ~OUTPUT~		~%MOD_FOLDER%/backup/output~
+OUTER_SPRINT ~LIBS~			~%MOD_FOLDER%/lib~
+OUTER_SPRINT ~SCRIPTS~	~%MOD_FOLDER%/scripts~
+
+INCLUDE ~%LIBS%/_A7functions.tph~
+INCLUDE ~%LIBS%/_functions.tpa~
+INCLUDE ~%LIBS%/fl#add_kit_ee.tpa~
+	
+ADD_PROJECTILE ~%MOD_FOLDER%/projectiles/c4cb60ft.pro~
+ADD_PROJECTILE ~%MOD_FOLDER%/projectiles/c4cbmhit.pro~
+
+
+// ADD_SECTYPE CelticAlacrity @2006
+// ADD_SECTYPE CelticSpecialSong @3001
+// ADD_SECTYPE CelticWeak @3002
+

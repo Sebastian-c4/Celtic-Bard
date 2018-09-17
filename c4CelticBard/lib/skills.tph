@@ -1,0 +1,389 @@
+
+//// 基础歌曲
+COPY_EXISTING c4cba0_.spl override
+	
+COPY_EXISTING c4cba0.spl override
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=c4cb60ft END
+
+// 治疗
+OUTER_FOR (i=1;i<4;++i) BEGIN
+	COPY_EXISTING c4cbab1.spl ~override/c4cbab%i%.spl~
+		LPF ALTER_EFFECT INT_VAR match_opcode=17 parameter1=i*4 END
+END
+
+////// 高等战歌
+LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=0 STR_VAR name=c4cbaen0 variable=~c4CelticBard_Enhanced_Song~ END
+LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=1 STR_VAR name=c4cbaen1 variable=~c4CelticBard_Enhanced_Song~ END
+
+COPY_EXISTING c4cbax0_.spl override
+	LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=177 parameter2=2 STR_VAR resource=c4cbaen1 END
+	WRITE_ASCII 0x3a c4cbaxb (8)
+	SAY NAME1 @2111
+	SAY UNIDENTIFIED_DESC @2112
+	
+COPY_EXISTING c4cbax0.spl override
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=c4cb60ft END
+	
+// 免疫效果
+OUTER_SPRINT power_word @2001
+
+COPY_EXISTING_REGEXP - GLOB ~.*\.spl~ override
+	READ_LONG 8 name_strref
+	GET_STRREF name_strref name
+	PATCH_IF
+				!~%name%~ STRING_CONTAINS_REGEXP ~%power_word%~ 
+		&& 	STRING_LENGTH ~%name%~ > STRING_LENGTH ~%power_word%~ 
+	BEGIN
+		SET $immu(~%SOURCE_RES%~) =1
+	END
+
+ACTION_FOR_EACH identifier IN 
+	CLERIC_HOLY_WORD
+	CLERIC_UNHOLY_WORD
+	WIZARD_WAIL_OF_THE_BANSHEE
+	BANSHEE_WAIL
+	DEMILICH_DEATH
+	ELVEN_GUARD_WAIL
+BEGIN
+	LAF find_spell_file STR_VAR identifier RET spell_file END
+	OUTER_SET $immu(~%spell_file%~) =1
+END
+
+COPY_EXISTING c4cbaa2.spl ~override/c4cbaa4.spl~
+	PHP_EACH immu AS resource => int BEGIN
+		LPF CLONE_EFFECT INT_VAR match_opcode=23 opcode=206 parameter1 = (RESOLVE_STR_REF (@2002)) STR_VAR resource insert=last END
+	END
+	
+//治疗
+COPY_EXISTING c4cbab3.spl ~override/c4cbab4.spl~
+	LPF CREATE_HEADERS_AS_LEVEL INT_VAR level_increment=2 level_multiplier=2 END
+	LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR parameter1=0 multi_parameter1=1 END
+	LPF CLONE_EFFECT INT_VAR match_opcode=17 opcode=98 timing=10 duration=100 parameter2=2 END	
+	LPF CLONE_EFFECT INT_VAR match_opcode=17 opcode=142 timing=10 duration=100 parameter2=87 END	
+	GET_OFFSET_ARRAY header SPL_V10_HEADERS
+	PHP_EACH header AS int => index BEGIN
+		READ_SHORT index+0x10 level
+		GET_OFFSET_ARRAY2 effect index SPL_V10_HEAD_EFFECTS
+		PHP_EACH effect AS int => offset BEGIN
+			READ_SHORT offset opcode
+			PATCH_IF opcode=98 BEGIN
+				SET count=level/12
+				WRITE_LONG offset+0x4 ~%count%~
+			END
+		END
+	END
+	
+// 敏捷思维
+OUTER_FOR (i=1;i<5;++i) BEGIN
+	COPY_EXISTING c4cbac1.spl ~override/c4cbac%i%.spl~
+		LPF ALTER_EFFECT INT_VAR parameter1=i END
+		LPF CLONE_EFFECT INT_VAR opcode=321 STR_VAR resource=~%DEST_RES%~ END
+END
+	
+//// 余音绕梁
+COPY_EXISTING c4cbax0_.spl ~override/c4cbay0_.spl~
+	WRITE_ASCII 0x3a c4cbayb (8)
+	SAY NAME1 @2113
+	SAY UNIDENTIFIED_DESC @2114
+
+COPY_EXISTING c4cbax0.spl ~override/c4cbay0.spl~
+	LPF ALTER_EFFECT INT_VAR match_opcode=142 duration=200 END
+	GET_OFFSET_ARRAY header SPL_V10_HEADERS
+	PHP_EACH header AS int => index BEGIN
+		GET_OFFSET_ARRAY2 effect index SPL_V10_HEAD_EFFECTS
+		PHP_EACH effect AS int => offset BEGIN
+			READ_SHORT offset opcode
+			PATCH_IF opcode=146 BEGIN
+				READ_ASCII offset+0x14 son
+				SPRINT linger ~%son%~^~y~
+				WRITE_ASCII offset+0x14 ~%linger%~
+				INNER_ACTION BEGIN
+					COPY_EXISTING ~%son%.spl~ ~override/%linger%.spl~
+						LPF ALTER_EFFECT INT_VAR match_duration=100 duration=200 END
+				END
+			END
+		END
+	END
+	
+//// 钢铁意志
+COPY_EXISTING c4cbim.spl override
+	WRITE_ASCII 0x3a c4cbimb (8)
+	LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbimb END
+	SAY NAME1 @2115
+	SAY UNIDENTIFIED_DESC @2116
+	
+//// UAI
+COPY_EXISTING c4cbuai.spl override
+	WRITE_ASCII 0x3a c4cbuaib (8)
+	LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbuaib END
+	SAY NAME1 @2117
+	SAY UNIDENTIFIED_DESC @2118
+
+//// 咏誓之弦
+COPY_EXISTING c4cbmh.spl override
+	WRITE_ASCII 0x3a c4cbmhb (8)
+	LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbmhb END
+	LPF CREATE_HEADERS_AS_LEVEL INT_VAR level_increment=2 level_multiplier=2 END
+	LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR match_timing=0 duration=0 multi_duration=6 END
+	SAY NAME1 @2119
+	SAY UNIDENTIFIED_DESC @2120
+	
+COPY_EXISTING c4cbmh.itm override
+	WRITE_ASCII 0x3a c4cbmhb (8)
+	LPF ALTER_ITEM_HEADER INT_VAR projectile=c4cbmhit STR_VAR icon=c4cbmhb END
+	SAY NAME2 @2119
+	SAY DESC @2121
+	
+//// 培罗
+COPY_EXISTING c4cbgood.spl override
+	WRITE_ASCII 0x3a c4cbalgb (8)
+	LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbalgb END
+	SAY NAME1 @2122
+	SAY UNIDENTIFIED_DESC @2123
+
+//// 法兰恩
+COPY_EXISTING c4cbneut.spl override
+	WRITE_ASCII 0x3a c4cbalnb (8)
+	LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbalnb END
+	PATCH_FOR_EACH opcode IN 27 28 29 30 31 84 85 86 87 88 89 BEGIN
+		LPF CLONE_EFFECT INT_VAR match_opcode=33 opcode parameter1=10 END
+	END
+	SAY NAME1 @2124
+	SAY UNIDENTIFIED_DESC @2125
+
+//// 厄瑞斯努	
+COPY_EXISTING c4cbevil.spl override
+	WRITE_ASCII 0x3a c4cbaleb (8)
+	LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbaleb END
+	FOR (i=1;i<11;++i) BEGIN
+		LPF CLONE_EFFECT INT_VAR match_opcode=1 opcode=332 parameter1=5 parameter2=i END
+	END
+	SAY NAME1 @2126
+	SAY UNIDENTIFIED_DESC @2127
+
+//// 心灵颂唱
+// 防替换法术
+LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cbs000~ END
+
+ACTION_FOR_EACH isHLA IN x y BEGIN
+		
+	ACTION_FOR_EACH type IN a b c BEGIN
+	
+		// 防替换
+		COPY_EXISTING c4cbs000.spl override
+			LPF ADD_SPELL_EFFECT INT_VAR opcode=206 target=1 duration=60 parameter1= RESOLVE_STR_REF (@3003) STR_VAR resource=~c4cbs%type%%isHLA%_~ END
+		
+		OUTER_SET tra_type = (~%type%~ STR_EQ a) ? 1 : (~%type%~ STR_EQ b) ? 2 : 3
+		OUTER_SET tra_hla = (~%isHLA%~ STR_EQ x) ? 0 : 1		
+		OUTER_SET name_strref=3000+tra_type*100+tra_hla*10
+		OUTER_SET desc_strref=name_strref+1
+		OUTER_SET tag_strref=name_strref+2
+		OUTER_SET end_strref=name_strref+3	
+		OUTER_SET hla_desc_strref=name_strref+4
+		
+		// 基础标记
+		LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cbs%type%x~ END
+		COPY_EXISTING ~c4cbs%type%x.spl~ override
+			LPF ADD_SPELL_EFFECT INT_VAR opcode=177 target=1 timing=9 parameter2=2 STR_VAR resource=~c4cbs%type%x~ END
+
+		LAF CREATE_EFFECT INT_VAR opcode=187 target=1 timing=9 parameter1=1 STR_VAR name=~c4cbs%type%x~ variable=~c4CelticBard_SpecialSong_%type%~ END
+		
+		// 高阶表技能
+		ACTION_IF ~%isHLA%~ STR_EQ y BEGIN
+			// 状态标记
+			LAF CREATE_EFFECT INT_VAR opcode=187 target=1 timing=9 parameter1=2 STR_VAR name=~c4cbs%type%y~ variable=~c4CelticBard_SpecialSong_%type%~ END
+		
+			COPY ~%MOD_FOLDER%/spells/base/c4cbs0.spl~ ~override/c4cbs%type%y.spl~
+				WRITE_ASCIIE 0x3a ~c4cbs%type%%isHLA%b~
+				LPF ALTER_SPELL_HEADER STR_VAR icon=~c4cbs%type%%isHLA%b~ END
+				LPF ALTER_EFFECT INT_VAR match_opcode=172 STR_VAR resource=~c4cbs%type%x_~ END
+				LPF ALTER_EFFECT INT_VAR match_opcode=171 STR_VAR resource=~c4cbs%type%y_~ END
+				LPF CLONE_EFFECT INT_VAR match_opcode=215 opcode=177 target=1 timing=9 parameter2=2 STR_VAR resource=~c4cbs%type%y~ END
+				WRITE_LONG 8 RESOLVE_STR_REF ((AT name_strref))
+				WRITE_LONG 0x50 RESOLVE_STR_REF ((AT hla_desc_strref))
+		END
+		
+		// 刷新
+		LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cbs%type%%isHLA%R~ END
+		COPY_EXISTING ~c4cbs%type%%isHLA%R.spl~ override
+			LPF ADD_SPELL_EFFECT INT_VAR opcode=172 target=2 timing=9 parameter2=2 STR_VAR resource=~c4cbs%type%%isHLA%_.spl~ END
+			LPF ADD_SPELL_EFFECT INT_VAR opcode=171 target=2 timing=9 parameter2=2 STR_VAR resource=~c4cbs%type%%isHLA%_.spl~ END
+
+		// 切换
+		LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=0 STR_VAR name=c4cbspe0 variable=~c4CelticBard_Special~ END
+		LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=1 STR_VAR name=c4cbspe1 variable=~c4CelticBard_Special~ END
+		
+		COPY ~%MOD_FOLDER%/spells/base/c4cbs00_.spl~ ~override/c4cbs%type%%isHLA%_.spl~
+			WRITE_LONG 8 RESOLVE_STR_REF ((AT name_strref))
+			WRITE_LONG 0x50 RESOLVE_STR_REF ((AT desc_strref))
+			WRITE_ASCIIE 0x3a ~c4cbs%type%%isHLA%b~
+			LPF ALTER_SPELL_HEADER STR_VAR icon=~c4cbs%type%%isHLA%b~ END
+			// 防中途切换
+			LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=146 timing=1 STR_VAR resource=c4cbs000 insert=last END
+			//疲劳
+			LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=177 timing=1 parameter2=2 STR_VAR resource=~c4cbspe1~ END
+			LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=146 timing=4 parameter2=2 STR_VAR resource=~c4cbwekx~ END
+			LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=146 timing=4 parameter2=2 STR_VAR resource=~c4cbweky~ END
+			// 移除和免疫敏捷思维效果
+			PATCH_FOR_EACH mind IN 1 2 3 4 4y BEGIN
+				LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=321 STR_VAR resource=~c4cbac%mind%~ END
+				LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=206 STR_VAR resource=~c4cbac%mind%~ END
+			END
+			//设置歌曲和文字
+			LPF ALTER_EFFECT INT_VAR match_opcode=251 STR_VAR resource=~c4cbs%type%%isHLA%0~ END
+			LPF ALTER_EFFECT INT_VAR match_opcode=290 parameter1=RESOLVE_STR_REF ((AT tag_strref)) END
+			LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=139 timing=4 parameter1=RESOLVE_STR_REF ((AT end_strref)) END
+			
+	END
+
+	// 庇护
+	COPY ~%MOD_FOLDER%/spells/base/c4cbsa.spl~ ~override/c4cbsa%isHLA%0.spl~
+		acsave = (~%isHLA%~ STR_EQ x) ? 2 : 6
+		resist = (~%isHLA%~ STR_EQ x) ? 3 : 15
+		resist_plus = (~%isHLA%~ STR_EQ x) ? 3 : 5
+		max_level = (~%isHLA%~ STR_EQ x) ? 24 : 40
+		level_increment = (~%isHLA%~ STR_EQ x) ? 8 : 32
+		LPF CREATE_HEADERS_AS_LEVEL INT_VAR max_level level_increment level_multiplier=8 END
+		PATCH_FOR_EACH match_opcode IN 0 33 34 35 36 37 BEGIN
+			LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR match_opcode parameter1=acsave multi_parameter1=1 END
+		END
+		PATCH_FOR_EACH match_opcode IN 27 28 29 30 31 84 85 86 87 88 89 BEGIN
+			LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR match_opcode parameter1=resist multi_parameter1=resist_plus END
+		END
+
+	// 鼓舞
+	COPY ~%MOD_FOLDER%/spells/base/c4cbsb.spl~ ~override/c4cbsb%isHLA%0.spl~
+		parameter1 = (~%isHLA%~ STR_EQ x) ? 2 : 4
+		max_level = (~%isHLA%~ STR_EQ x) ? 24 : 40
+		level_increment = (~%isHLA%~ STR_EQ x) ? 16 : 32
+		LPF CREATE_HEADERS_AS_LEVEL INT_VAR max_level level_increment level_multiplier=8 END
+		PATCH_FOR_EACH match_opcode IN 73 250 278 BEGIN
+			LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR match_opcode parameter1 multi_parameter1=1 END
+		END
+
+	// 启迪
+	COPY ~%MOD_FOLDER%/spells/base/c4cbsc.spl~ ~override/c4cbsc%isHLA%0.spl~
+		max_level = (~%isHLA%~ STR_EQ x) ? 24 : 40
+		level_increment = (~%isHLA%~ STR_EQ x) ? 24 : 32
+		//提升等级#96存在bug, 使用提升超渡等级#323暂代, 奥术和神术等级当前包含所有对应施法者
+		// LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=96 parameter2=0 STR_VAR insert=last END
+		LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=323 parameter2=0 STR_VAR insert=last END
+		//奥术等级
+		// PATCH_FOR_EACH parameter1 IN 7 10 14 17 BEGIN
+		PATCH_FOR_EACH parameter1 IN 1 5 7 10 13 14 17 19 BEGIN
+			LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=326 timing=1 duration=0 parameter1 parameter2=105 STR_VAR resource=arc insert=last END
+		END
+		//神术等级
+		// PATCH_FOR_EACH parameter1 IN 8 16 17 BEGIN
+		PATCH_FOR_EACH parameter1 IN 3 6 8 11 12 14 15 16 17 18 21 BEGIN
+			LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=326 timing=1 duration=0 parameter1 parameter2=105 STR_VAR resource=div insert=last END
+		END
+		LPF CREATE_HEADERS_AS_LEVEL INT_VAR max_level level_increment level_multiplier=8 END
+		parameter1 = (~%isHLA%~ STR_EQ x) ? 2 : 4
+		// LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR match_opcode=96 parameter1 multi_parameter1=1 END
+		LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR match_opcode=323 parameter1 multi_parameter1=1 END
+		PATCH_DEFINE_ARRAY array1 BEGIN 1 4 7 END
+		PATCH_DEFINE_ARRAY array2 BEGIN 2 5 8 END
+		LPF ALTER_HEADER_EFFECTS_AS_LEVEL STR_VAR match_resource=arc resource=~c4cbsc%isHLA%~ suffix_array=array1 END
+		LPF ALTER_HEADER_EFFECTS_AS_LEVEL STR_VAR match_resource=div resource=~c4cbsc%isHLA%~ suffix_array=array2 END
+		
+	OUTER_FOR (i=0;i<3;++i) BEGIN
+		ACTION_FOR_EACH parameter2 IN 0 1 BEGIN
+			OUTER_SET suffix=parameter2+1+i*3
+			OUTER_SET parameter1 = (~%isHLA%~ STR_EQ x) ? (i+2) : (i+4)
+			ACTION_IF (i<2) || (~%isHLA%~ STR_EQ y) BEGIN
+				LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cbsc%isHLA%%suffix%~ END
+				COPY_EXISTING ~c4cbsc%isHLA%%suffix%.spl~ override
+					LPF ADD_SPELL_EFFECT INT_VAR opcode=191 target=2 timing=10 duration= (~%isHLA%~ STR_EQ x) ? 100 : 200 parameter1 parameter2 END
+			END
+		END
+	END
+
+	// 战歌调整
+	COPY_EXISTING_REGEXP GLOB ~c4cbs[a-c]%isHLA%0.spl~ override
+		// 防叠加
+		LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=321 parameter2=0 STR_VAR resource=~%DEST_RES%~ insert=first END
+		// 持续时间, 投射
+		SET duration= (~%isHLA%~ STR_EQ x) ? 100 : 200
+		LPF ALTER_EFFECT INT_VAR match_duration=100 duration END
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=c4cb60ft END
+		// 附带基础战歌效果
+		header=1
+		GET_OFFSET_ARRAY header SPL_V10_HEADERS
+		PHP_EACH header AS int => index BEGIN
+			READ_SHORT index+0x10 min_level
+			PATCH_IF ~%isHLA%~ STR_EQ x BEGIN
+				PATCH_IF	(min_level<8) && (~%SOURCE_RES%~ STRING_CONTAINS_REGEXP ~c4cbsa~ =0) BEGIN
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbaa1 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbab1 END
+				END
+				PATCH_IF	((min_level>7 && min_level < 16) && (~%SOURCE_RES%~ STRING_CONTAINS_REGEXP ~c4cbsa~ =0)) ||
+									((min_level=1) && (~%SOURCE_RES%~ STRING_CONTAINS_REGEXP ~c4cbsb~ =0))
+				BEGIN
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbaa2 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbab2 END
+				END
+				PATCH_IF	((min_level>15) && (~%SOURCE_RES%~ STRING_CONTAINS_REGEXP ~c4cbs[ab]~ =0)) ||
+									(~%SOURCE_RES%~ STRING_CONTAINS_REGEXP ~c4cbsc~ =0)
+				BEGIN
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbaa2 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbab3 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbac1 END
+				END
+			END ELSE BEGIN
+				PATCH_IF min_level<32 BEGIN
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbaa4 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbab4 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbac2y END
+				END
+				PATCH_IF min_level>31 && min_level < 40 BEGIN
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbaa4 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbab4 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbac3y END
+				END
+				PATCH_IF min_level>39 BEGIN
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbaa4 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbab4 END
+					LPF ADD_SPELL_EFFECT INT_VAR header opcode=146 target=2 timing=1 parameter2=2 STR_VAR resource=c4cbac4y END
+				END
+			END
+			
+			header+=1
+		END
+
+END
+		
+//// 疲劳状态
+LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=0 STR_VAR name=c4cbwek0 variable=~c4CelticBard_Weak~ END
+LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=1 STR_VAR name=c4cbwek1 variable=~c4CelticBard_Weak~ END
+
+COPY_EXISTING c4cbwekx.spl override c4cbweky.spl override
+	LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=321 STR_VAR resource=~c4cbs000~ END
+	LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=177 timing=1 parameter2=2 STR_VAR resource=~c4cbspe0~ END
+	PATCH_IF ~%SOURCE_RES%~ STR_EQ ~c4cbwekx~ BEGIN
+		LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=321 parameter2=0 STR_VAR resource=c4cbweky END
+		LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=206 parameter2=0 STR_VAR resource=c4cbweky END
+	END
+	PATCH_FOR_EACH special_song IN
+		c4cbsax_ c4cbsbx_ c4cbscx_
+		c4cbsay_ c4cbsby_ c4cbscy_
+	BEGIN
+		LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=321 parameter2=0 STR_VAR resource=~%special_song%~ END
+		LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=206 parameter1= RESOLVE_STR_REF (@3002) parameter2=0 STR_VAR resource=~%special_song%~ insert=last END
+	END
+	LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=177 timing=1 parameter2=2 STR_VAR resource=c4cbwek1 END
+	LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=139 timing=1 parameter1= RESOLVE_STR_REF (@3000) END
+	// LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=139 timing=4 parameter1= RESOLVE_STR_REF (@3001) END
+	LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=146 timing=4 parameter2=2 STR_VAR resource=~c4cbwek0~ insert=last END
+	LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=206 parameter2=0 STR_VAR resource=~%SOURCE_RES%~ insert=last END
+	
+// 休息后移除疲劳
+LAF CREATE_EMPTY_SPELL STR_VAR name=c4cbwek0 END
+COPY_EXISTING c4cbwek0.spl override
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 STR_VAR resource=c4cbwek0 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 STR_VAR resource=c4cbwekx END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 STR_VAR resource=c4cbweky END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 STR_VAR resource=c4cbs000 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=139 target=2 parameter1= RESOLVE_STR_REF (@3001) END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=177 target=2 parameter2=2 STR_VAR resource=c4cbaen0 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=177 target=2 parameter2=2 STR_VAR resource=c4cbwek0 END
