@@ -1,0 +1,73 @@
+DEFINE_ACTION_FUNCTION add_kits BEGIN
+
+	INCLUDE ~%LIBS%/fl#add_kit_ee.tpa~
+
+	/* c4CelticBard Kit */
+	ADD_KIT ~c4CelticBard~
+	/* CLASWEAP.2DA */
+		~c4CelticBard 1 1 1 1 1 1 1 1~
+	/* WEAPPROF.2DA */
+		~c4CelticBard 1 1 0 0 1 1 1 0 1 1 1 1 0 1 1 1 1 1 0 0 1 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0~
+	/* ABCLASRQ.2DA */
+		~c4CelticBard 0 0 0 18 14 18~
+	/* ABCLSMOD.2DA */
+		~c4CelticBard 0 0 0 0 0 2~
+	/* ABDCDSRQ.2DA */
+		~c4CelticBard 0 0 0 0 0 0~
+	/* ABDCSCRQ.2DA */
+		~c4CelticBard 0 0 0 0 0 0~
+	/* ALIGNMNT.2DA */
+		~c4CelticBard 1 1 1 0 0 0 0 0 0~
+	/* DUALCLAS.2DA */
+		~c4CelticBard 0 0 0 0 0 0~
+	/* The path of abilities 2DA file */
+		~override/clabc4cb.2da~
+	/* KITTABLE.2DA */
+		~K_B_E	K_B_G	K_B_H	K_B_HE~
+	/* KITLIST.2DA */
+		~0x000007c0 5~
+	/* LUABBR.2DA */
+		~c4cb~
+	/* 25STWEAP.2DA */
+		~CHAN12 * HELM19 BAG30 RING06 RING34 CLCK02 BOOT01 AMUL19 BRAC16 BELT10 AROW11,40 BULL03,40 BOLT06,40 POTN52,5 POTN04,2 POTN14,5 DAGG12 SW1H28 HAMM12~
+		SAY @1
+		SAY @2
+		SAY @3
+
+	LAF fl#add_kit_ee 
+		INT_VAR 
+			briefdesc= RESOLVE_STR_REF(@3)
+		STR_VAR
+			kit_name= c4CelticBard
+			clsrcreq = ~1 1 1 0 0 1 0~
+			thiefscl = ~0 0 0 0 0 0 0 0~
+	END
+		
+	//// 版本标记
+	LAF CREATE_EFFECT INT_VAR opcode=187 timing=1 parameter1=c4CelticBardVer STR_VAR name=c4cbVer variable=c4CelticBardVer END
+	COPY_EXISTING c4cb00.spl override
+		LPF CLONE_EFFECT INT_VAR match_opcode=144 opcode=177 timing=1 parameter2=2 STR_VAR resource=c4cbVer END
+			
+	//// 禁用误导、投影、拟像
+	ACTION_FOR_EACH identifier IN WIZARD_MISLEAD WIZARD_PROJECT_IMAGE WIZARD_SIMULACRUM BEGIN
+		LAF find_spell_file STR_VAR identifier RET spell_file END
+		COPY_EXISTING - ~%spell_file%.spl~ override
+			READ_LONG 8 name_strref
+			GET_STRREF name_strref name
+			SPRINT prefix @4
+			SPRINT ~name~ ~%prefix%~^~%name%~
+		
+		COPY_EXISTING c4cb00.spl override
+			LPF CLONE_EFFECT INT_VAR match_opcode=144 opcode=206 parameter1= RESOLVE_STR_REF (~%name%~) parameter2=0 STR_VAR resource=~%spell_file%~ END
+	END
+
+	//// 天生阵营
+	OUTER_FOR (i=1;i<4;++i) BEGIN
+		LAF CREATE_EFFECT INT_VAR opcode=187 timing=9 parameter1=i STR_VAR name=~c4cbali%i%~ variable=~c4CelticBard_Born_Alignment~ END
+		LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cbali%i%~ END
+		COPY_EXISTING ~c4cbali%i%.spl~ override
+			LPF ADD_SPELL_EFFECT INT_VAR opcode=313 target=2 timing=9 STR_VAR resource=~%SOURCE_RES%~ END
+			LPF ADD_SPELL_EFFECT INT_VAR opcode=177 target=2 timing=9 parameter2=2 STR_VAR resource=~c4cbali%i%~ END
+	END
+
+END

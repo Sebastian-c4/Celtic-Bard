@@ -1,0 +1,25 @@
+
+DEFINE_ACTION_FUNCTION install_kits BEGIN
+
+	/* copy */
+	COPY ~%mod_root%/2da~							override
+	COPY ~%mod_root%/bam~							override
+	COPY ~%mod_root%/itm~							override
+	COPY ~%mod_root%/spl~							override
+	
+	// version mark
+	LAF make_label STR_VAR label=~c4CelticBard_version_%c4CelticBardVer%~ END
+
+	// addkit
+	LAF run STR_VAR file=add_kits file_loc=lib tra=game END
+
+	/* 歌曲和技能 */
+	LAF run STR_VAR file=skills file_loc=lib tra=game END
+
+	/* 戒指及武器 */
+	LAF run STR_VAR file=ring_and_weapon file_loc=lib tra=game END
+
+	/* 脚本 */
+	LAF run STR_VAR file=script file_loc=lib tra=game END
+
+END
