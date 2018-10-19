@@ -21,7 +21,7 @@ LANGUAGE 	~Simplified Chinese~
 					~schinese~
 					~c4CelticBard/lang/schinese/prompts/prompts-%WEIDU_OS%.tra~
 					~c4CelticBard/lang/schinese/setup.tra~ 
-					// ~c4CelticBard/lang/schinese/game.tra~
+					~c4CelticBard/lang/schinese/game.tra~
 
 BEGIN @0
 DESIGNATED 1
