@@ -8,18 +8,19 @@ DEFINE_ACTION_FUNCTION install_kits BEGIN
 	COPY ~%mod_root%/spl~							override
 	
 	// version mark
-	LAF make_label STR_VAR label=~c4CelticBard_version_%c4CelticBardVer%~ END
+	COPY ~.../c4_inlined/blank.baf~ ~override/c4CelticBard_version_%c4CelticBardVer%.mrk~
+	// LAF make_label STR_VAR label=~c4CelticBard_version_%c4CelticBardVer%~ END
 
 	// addkit
 	LAF run STR_VAR file=add_kits file_loc=lib tra=game END
 
-	/* ¸èÇúºÍ¼¼ÄÜ */
+	/* æ­Œæ›²å’ŒæŠ€èƒ½ */
 	LAF run STR_VAR file=skills file_loc=lib tra=game END
 
-	/* ½äÖ¸¼°ÎäÆ÷ */
+	/* æˆ’æŒ‡åŠæ­¦å™¨ */
 	LAF run STR_VAR file=ring_and_weapon file_loc=lib tra=game END
 
-	/* ½Å±¾ */
+	/* è„šæœ¬ */
 	LAF run STR_VAR file=script file_loc=lib tra=game END
 
 END

@@ -1,7 +1,7 @@
 DEFINE_ACTION_FUNCTION ring_and_weapon BEGIN
 
 	OUTER_FOR (i=1;i<6;++i) BEGIN
-		// °´µÈ¼¶Ìí¼Ó½äÖ¸ºÍ¼¼ÄÜ
+		// æŒ‰ç­‰çº§æ·»åŠ æˆ’æŒ‡å’ŒæŠ€èƒ½
 		COPY ~%mod_root%/spl/base/c4cbrin0.spl~ ~override/c4cbrin%i%.spl~
 			LPF ALTER_EFFECT STR_VAR resource=~c4cbrin%i%~ END
 			FOR (j=1;j<6;++j) BEGIN
@@ -9,7 +9,7 @@ DEFINE_ACTION_FUNCTION ring_and_weapon BEGIN
 			END
 			LPF CLONE_EFFECT INT_VAR match_opcode=143 opcode=171 parameter1=0 STR_VAR resource=~c4cbcsw%i%~ END
 
-		// ½äÖ¸
+		// æˆ’æŒ‡
 		COPY ~%mod_root%/itm/base/c4cbrin0.itm~ ~override/c4cbrin%i%.itm~
 			PATCH_FOR_EACH match_opcode IN 0 325 BEGIN
 				LPF ALTER_EFFECT INT_VAR match_opcode parameter1=i END
@@ -21,7 +21,7 @@ DEFINE_ACTION_FUNCTION ring_and_weapon BEGIN
 			WRITE_LONG 0x50 RESOLVE_STR_REF ((AT "%desc%"))
 			WRITE_LONG 0x54 RESOLVE_STR_REF ((AT "%desc%"))
 			
-		// ÎäÆ÷Ñ¡ÔñÁÐ±í
+		// æ­¦å™¨é€‰æ‹©åˆ—è¡¨
 		COPY ~%mod_root%/spl/base/c4cbcsw0.spl~ ~override/c4cbcsw%i%.spl~
 			WRITE_ASCII 0x3a c4cbcswb
 			LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbcswb END
@@ -36,7 +36,7 @@ DEFINE_ACTION_FUNCTION ring_and_weapon BEGIN
 			SET_2DA_ENTRY_LATER weapon 2 1 ~C4CBSW%i%C~
 			SET_2DA_ENTRIES_NOW weapon 3
 			
-		// ÎäÆ÷	
+		// æ­¦å™¨	
 		ACTION_FOR_EACH type IN a b c BEGIN
 		
 			OUTER_SET tra_type = (~%type%~ STR_EQ a) ? 1 : (~%type%~ STR_EQ b) ? 2 : 3
@@ -80,7 +80,7 @@ DEFINE_ACTION_FUNCTION ring_and_weapon BEGIN
 				
 				LPF CLONE_EFFECT INT_VAR match_opcode=1 opcode=146 parameter1=0 parameter2=1 STR_VAR resource=~c4cb!kit~ END
 
-			// ÎäÆ÷ÆäËûÖ°Òµ²»¿ÉÓÃ
+			// æ­¦å™¨å…¶ä»–èŒä¸šä¸å¯ç”¨
 			LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cb!kit~ END
 			COPY_EXISTING ~c4cb!kit.spl~ override
 				LPF ADD_SPELL_EFFECT INT_VAR opcode=139 target=2 timing=1 parameter1= RESOLVE_STR_REF (@4000) END

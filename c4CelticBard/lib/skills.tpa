@@ -1,18 +1,18 @@
 DEFINE_ACTION_FUNCTION skills BEGIN
 
-	//// ª˘¥°∏Ë«˙
+	//// Âü∫Á°ÄÊ≠åÊõ≤
 	COPY_EXISTING c4cba0_.spl override
 		
 	COPY_EXISTING c4cba0.spl override
 		LPF ALTER_SPELL_HEADER INT_VAR projectile=c4cb60ft END
 
-	// ÷Œ¡∆
+	// Ê≤ªÁñó
 	OUTER_FOR (i=1;i<4;++i) BEGIN
 		COPY_EXISTING c4cbab1.spl ~override/c4cbab%i%.spl~
 			LPF ALTER_EFFECT INT_VAR match_opcode=17 parameter1=i*4 END
 	END
 
-	////// ∏ﬂµ»’Ω∏Ë
+	////// È´òÁ≠âÊàòÊ≠å
 	LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=0 STR_VAR name=c4cbaen0 variable=~c4CelticBard_Enhanced_Song~ END
 	LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=1 STR_VAR name=c4cbaen1 variable=~c4CelticBard_Enhanced_Song~ END
 
@@ -25,7 +25,7 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 	COPY_EXISTING c4cbax0.spl override
 		LPF ALTER_SPELL_HEADER INT_VAR projectile=c4cb60ft END
 		
-	// √‚“ﬂ–ßπ˚
+	// ÂÖçÁñ´ÊïàÊûú
 	OUTER_SPRINT power_word @2001
 
 	COPY_EXISTING_REGEXP - GLOB ~.*\.spl~ override
@@ -55,7 +55,7 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 			LPF CLONE_EFFECT INT_VAR match_opcode=23 opcode=206 parameter1 = (RESOLVE_STR_REF (@2002)) STR_VAR resource insert=last END
 		END
 		
-	//÷Œ¡∆
+	//Ê≤ªÁñó
 	COPY_EXISTING c4cbab3.spl ~override/c4cbab4.spl~
 		LPF CREATE_HEADERS_AS_LEVEL INT_VAR level_increment=2 level_multiplier=2 END
 		LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR parameter1=0 multi_parameter1=1 END
@@ -74,14 +74,14 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 			END
 		END
 		
-	// √ÙΩ›ÀºŒ¨
+	// ÊïèÊç∑ÊÄùÁª¥
 	OUTER_FOR (i=1;i<5;++i) BEGIN
 		COPY_EXISTING c4cbac1.spl ~override/c4cbac%i%.spl~
 			LPF ALTER_EFFECT INT_VAR parameter1=i END
 			LPF CLONE_EFFECT INT_VAR opcode=321 STR_VAR resource=~%DEST_RES%~ END
 	END
 		
-	//// ”‡“Ù»∆¡∫
+	//// ‰ΩôÈü≥ÁªïÊ¢Å
 	COPY_EXISTING c4cbax0_.spl ~override/c4cbay0_.spl~
 		WRITE_ASCII 0x3a c4cbayb (8)
 		SAY NAME1 @2113
@@ -106,7 +106,7 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 			END
 		END
 		
-	//// ∏÷Ã˙“‚÷æ
+	//// Èí¢ÈìÅÊÑèÂøó
 	COPY_EXISTING c4cbim.spl override
 		WRITE_ASCII 0x3a c4cbimb (8)
 		LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbimb END
@@ -120,7 +120,7 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 		SAY NAME1 @2117
 		SAY UNIDENTIFIED_DESC @2118
 
-	//// ”Ω ƒ÷Æœ“
+	//// ÂíèË™ì‰πãÂº¶
 	COPY_EXISTING c4cbmh.spl override
 		WRITE_ASCII 0x3a c4cbmhb (8)
 		LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbmhb END
@@ -135,14 +135,14 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 		SAY NAME2 @2119
 		SAY DESC @2121
 		
-	//// ≈‡¬ﬁ
+	//// ÂüπÁΩó
 	COPY_EXISTING c4cbgood.spl override
 		WRITE_ASCII 0x3a c4cbalgb (8)
 		LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbalgb END
 		SAY NAME1 @2122
 		SAY UNIDENTIFIED_DESC @2123
 
-	//// ∑®¿º∂˜
+	//// Ê≥ïÂÖ∞ÊÅ©
 	COPY_EXISTING c4cbneut.spl override
 		WRITE_ASCII 0x3a c4cbalnb (8)
 		LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbalnb END
@@ -152,7 +152,7 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 		SAY NAME1 @2124
 		SAY UNIDENTIFIED_DESC @2125
 
-	//// ∂Ú»Àπ≈¨	
+	//// ÂéÑÁëûÊñØÂä™	
 	COPY_EXISTING c4cbevil.spl override
 		WRITE_ASCII 0x3a c4cbaleb (8)
 		LPF ALTER_SPELL_HEADER STR_VAR icon=c4cbaleb END
@@ -162,15 +162,15 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 		SAY NAME1 @2126
 		SAY UNIDENTIFIED_DESC @2127
 
-	//// –ƒ¡ÈÀÃ≥™
-	// ∑¿ÃÊªª∑® ı
+	//// ÂøÉÁÅµÈ¢ÇÂî±
+	// Èò≤ÊõøÊç¢Ê≥ïÊúØ
 	LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cbs000~ END
 
 	ACTION_FOR_EACH isHLA IN x y BEGIN
 			
 		ACTION_FOR_EACH type IN a b c BEGIN
 		
-			// ∑¿ÃÊªª
+			// Èò≤ÊõøÊç¢
 			COPY_EXISTING c4cbs000.spl override
 				LPF ADD_SPELL_EFFECT INT_VAR opcode=206 target=1 duration=60 parameter1= RESOLVE_STR_REF (@3003) STR_VAR resource=~c4cbs%type%%isHLA%_~ END
 			
@@ -182,16 +182,16 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 			OUTER_SET end_strref=name_strref+3	
 			OUTER_SET hla_desc_strref=name_strref+4
 			
-			// ª˘¥°±Íº«
+			// Âü∫Á°ÄÊ†áËÆ∞
 			LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cbs%type%x~ END
 			COPY_EXISTING ~c4cbs%type%x.spl~ override
 				LPF ADD_SPELL_EFFECT INT_VAR opcode=177 target=1 timing=9 parameter2=2 STR_VAR resource=~c4cbs%type%x~ END
 
 			LAF CREATE_EFFECT INT_VAR opcode=187 target=1 timing=9 parameter1=1 STR_VAR name=~c4cbs%type%x~ variable=~c4CelticBard_SpecialSong_%type%~ END
 			
-			// ∏ﬂΩ◊±Ìººƒ‹
+			// È´òÈò∂Ë°®ÊäÄËÉΩ
 			ACTION_IF ~%isHLA%~ STR_EQ y BEGIN
-				// ◊¥Ã¨±Íº«
+				// Áä∂ÊÄÅÊ†áËÆ∞
 				LAF CREATE_EFFECT INT_VAR opcode=187 target=1 timing=9 parameter1=2 STR_VAR name=~c4cbs%type%y~ variable=~c4CelticBard_SpecialSong_%type%~ END
 			
 				COPY ~%mod_root%/spl/base/c4cbs0.spl~ ~override/c4cbs%type%y.spl~
@@ -204,13 +204,13 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 					WRITE_LONG 0x50 RESOLVE_STR_REF ((AT hla_desc_strref))
 			END
 			
-			// À¢–¬
+			// Âà∑Êñ∞
 			LAF CREATE_EMPTY_SPELL STR_VAR name=~c4cbs%type%%isHLA%R~ END
 			COPY_EXISTING ~c4cbs%type%%isHLA%R.spl~ override
 				LPF ADD_SPELL_EFFECT INT_VAR opcode=172 target=2 timing=9 parameter2=2 STR_VAR resource=~c4cbs%type%%isHLA%_.spl~ END
 				LPF ADD_SPELL_EFFECT INT_VAR opcode=171 target=2 timing=9 parameter2=2 STR_VAR resource=~c4cbs%type%%isHLA%_.spl~ END
 
-			// «–ªª
+			// ÂàáÊç¢
 			LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=0 STR_VAR name=c4cbspe0 variable=~c4CelticBard_Special~ END
 			LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=1 STR_VAR name=c4cbspe1 variable=~c4CelticBard_Special~ END
 			
@@ -219,25 +219,25 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 				WRITE_LONG 0x50 RESOLVE_STR_REF ((AT desc_strref))
 				WRITE_ASCIIE 0x3a ~c4cbs%type%%isHLA%b~
 				LPF ALTER_SPELL_HEADER STR_VAR icon=~c4cbs%type%%isHLA%b~ END
-				// ∑¿÷–Õæ«–ªª
+				// Èò≤‰∏≠ÈÄîÂàáÊç¢
 				LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=146 timing=1 STR_VAR resource=c4cbs000 insert=last END
-				//∆£¿Õ
+				//Áñ≤Âä≥
 				LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=177 timing=1 parameter2=2 STR_VAR resource=~c4cbspe1~ END
 				LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=146 timing=4 parameter2=2 STR_VAR resource=~c4cbwekx~ END
 				LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=146 timing=4 parameter2=2 STR_VAR resource=~c4cbweky~ END
-				// “∆≥˝∫Õ√‚“ﬂ√ÙΩ›ÀºŒ¨–ßπ˚
+				// ÁßªÈô§ÂíåÂÖçÁñ´ÊïèÊç∑ÊÄùÁª¥ÊïàÊûú
 				PATCH_FOR_EACH mind IN 1 2 3 4 4y BEGIN
 					LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=321 STR_VAR resource=~c4cbac%mind%~ END
 					LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=206 STR_VAR resource=~c4cbac%mind%~ END
 				END
-				//…Ë÷√∏Ë«˙∫ÕŒƒ◊÷
+				//ËÆæÁΩÆÊ≠åÊõ≤ÂíåÊñáÂ≠ó
 				LPF ALTER_EFFECT INT_VAR match_opcode=251 STR_VAR resource=~c4cbs%type%%isHLA%0~ END
 				LPF ALTER_EFFECT INT_VAR match_opcode=290 parameter1=RESOLVE_STR_REF ((AT tag_strref)) END
 				LPF CLONE_EFFECT INT_VAR match_opcode=251 opcode=139 timing=4 parameter1=RESOLVE_STR_REF ((AT end_strref)) END
 				
 		END
 
-		// ±”ª§
+		// Â∫áÊä§
 		COPY ~%mod_root%/spl/base/c4cbsa.spl~ ~override/c4cbsa%isHLA%0.spl~
 			acsave = (~%isHLA%~ STR_EQ x) ? 2 : 6
 			resist = (~%isHLA%~ STR_EQ x) ? 3 : 15
@@ -252,7 +252,7 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 				LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR match_opcode parameter1=resist multi_parameter1=resist_plus END
 			END
 
-		// πƒŒË
+		// ÈºìËàû
 		COPY ~%mod_root%/spl/base/c4cbsb.spl~ ~override/c4cbsb%isHLA%0.spl~
 			parameter1 = (~%isHLA%~ STR_EQ x) ? 2 : 4
 			max_level = (~%isHLA%~ STR_EQ x) ? 24 : 40
@@ -262,19 +262,19 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 				LPF ALTER_HEADER_EFFECTS_AS_LEVEL INT_VAR match_opcode parameter1 multi_parameter1=1 END
 			END
 
-		// ∆Ùµœ
+		// ÂêØËø™
 		COPY ~%mod_root%/spl/base/c4cbsc.spl~ ~override/c4cbsc%isHLA%0.spl~
 			max_level = (~%isHLA%~ STR_EQ x) ? 24 : 40
 			level_increment = (~%isHLA%~ STR_EQ x) ? 24 : 32
-			//Ã·…˝µ»º∂#96¥Ê‘⁄bug,  π”√Ã·…˝≥¨∂…µ»º∂#323‘›¥˙, ∞¬ ı∫Õ…Ò ıµ»º∂µ±«∞∞¸∫¨À˘”–∂‘”¶ ©∑®’ﬂ
+			//ÊèêÂçáÁ≠âÁ∫ß#96Â≠òÂú®bug, ‰ΩøÁî®ÊèêÂçáË∂ÖÊ∏°Á≠âÁ∫ß#323ÊöÇ‰ª£, Â••ÊúØÂíåÁ•ûÊúØÁ≠âÁ∫ßÂΩìÂâçÂåÖÂê´ÊâÄÊúâÂØπÂ∫îÊñΩÊ≥ïËÄÖ
 			// LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=96 parameter2=0 STR_VAR insert=last END
 			LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=323 parameter2=0 STR_VAR insert=last END
-			//∞¬ ıµ»º∂
+			//Â••ÊúØÁ≠âÁ∫ß
 			// PATCH_FOR_EACH parameter1 IN 7 10 14 17 BEGIN
 			PATCH_FOR_EACH parameter1 IN 1 5 7 10 13 14 17 19 BEGIN
 				LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=326 timing=1 duration=0 parameter1 parameter2=105 STR_VAR resource=arc insert=last END
 			END
-			//…Ò ıµ»º∂
+			//Á•ûÊúØÁ≠âÁ∫ß
 			// PATCH_FOR_EACH parameter1 IN 8 16 17 BEGIN
 			PATCH_FOR_EACH parameter1 IN 3 6 8 11 12 14 15 16 17 18 21 BEGIN
 				LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=326 timing=1 duration=0 parameter1 parameter2=105 STR_VAR resource=div insert=last END
@@ -300,15 +300,15 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 			END
 		END
 
-		// ’Ω∏Ëµ˜’˚
+		// ÊàòÊ≠åË∞ÉÊï¥
 		COPY_EXISTING_REGEXP GLOB ~c4cbs[a-c]%isHLA%0.spl~ override
-			// ∑¿µ˛º”
+			// Èò≤Âè†Âä†
 			LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=321 parameter2=0 STR_VAR resource=~%DEST_RES%~ insert=first END
-			// ≥÷–¯ ±º‰, Õ∂…‰
+			// ÊåÅÁª≠Êó∂Èó¥, ÊäïÂ∞Ñ
 			SET duration= (~%isHLA%~ STR_EQ x) ? 100 : 200
 			LPF ALTER_EFFECT INT_VAR match_duration=100 duration END
 			LPF ALTER_SPELL_HEADER INT_VAR projectile=c4cb60ft END
-			// ∏Ω¥¯ª˘¥°’Ω∏Ë–ßπ˚
+			// ÈôÑÂ∏¶Âü∫Á°ÄÊàòÊ≠åÊïàÊûú
 			header=1
 			GET_OFFSET_ARRAY header SPL_V10_HEADERS
 			PHP_EACH header AS int => index BEGIN
@@ -354,7 +354,7 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 
 	END
 			
-	//// ∆£¿Õ◊¥Ã¨
+	//// Áñ≤Âä≥Áä∂ÊÄÅ
 	LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=0 STR_VAR name=c4cbwek0 variable=~c4CelticBard_Weak~ END
 	LAF CREATE_EFFECT INT_VAR opcode=187 parameter1=1 STR_VAR name=c4cbwek1 variable=~c4CelticBard_Weak~ END
 
@@ -378,7 +378,7 @@ DEFINE_ACTION_FUNCTION skills BEGIN
 		LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=146 timing=4 parameter2=2 STR_VAR resource=~c4cbwek0~ insert=last END
 		LPF CLONE_EFFECT INT_VAR match_opcode=142 opcode=206 parameter2=0 STR_VAR resource=~%SOURCE_RES%~ insert=last END
 		
-	// –›œ¢∫Û“∆≥˝∆£¿Õ
+	// ‰ºëÊÅØÂêéÁßªÈô§Áñ≤Âä≥
 	LAF CREATE_EMPTY_SPELL STR_VAR name=c4cbwek0 END
 	COPY_EXISTING c4cbwek0.spl override
 		LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 STR_VAR resource=c4cbwek0 END
